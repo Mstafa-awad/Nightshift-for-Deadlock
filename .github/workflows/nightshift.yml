@@ -30,8 +30,12 @@ jobs:
           python-version: '3.12'
       - name: Refresh small per-hero snapshots (no raw match archives)
         id: refresh
+        # Pushes deploy immediately. Only the monthly timer or Run workflow
+        # contacts the community API; this avoids accidental repeated requests.
+        if: github.event_name != 'push'
+        timeout-minutes: 12
         continue-on-error: true
-        run: python scripts/update_data.py
+        run: python -u scripts/update_data.py --quick --days 14 --timeout 12 --max-failures 2
       - name: Save successful data snapshots back to repository
         # Old snapshots are kept if API requests fail.
         run: |
