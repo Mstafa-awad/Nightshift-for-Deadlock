@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#171b19" />
+  <meta name="description" content="Nightshift: an icon-first Deadlock companion with cached hero art, item pictures and phase-aware picks." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>Nightshift — The Deadlock Field Guide</title>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span>✦</span></div>
+        <div><div class="brand-name">NIGHTSHIFT <span>///</span></div><div class="brand-sub">THE DEADLOCK FIELD GUIDE</div></div>
+      </div>
+      <div class="header-right">
+        <span id="connection" class="connection"><i></i> CHECKING</span>
+        <button id="settingsToggle" class="icon-btn" aria-label="Open settings" title="Settings">⚙</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div class="intro-copy"><div class="eyebrow"><span class="eyebrow-line"></span> A COMPANION FOR THE STREETS</div>
+          <h1>KNOW YOUR <em>NEXT MOVE.</em></h1>
+          <p>Spot the threat. Pick the gear. Get back to the fight.</p>
+        </div>
+        <div class="intro-aside"><span class="small-label">INTELLIGENCE SOURCE</span><div class="mode-control" role="group" aria-label="Data mode"><button id="demoMode" class="mode-active" type="button">PREVIEW</button><button id="realMode" type="button">REAL STATS</button></div><small id="modeHint">Sample numbers — visual test only</small></div>
+      </section>
+      <div id="notice" class="notice" role="status"><span id="noticeIcon">ⓘ</span><span id="noticeText">PREVIEW uses simulated example numbers. Switch to REAL STATS for historical data.</span><button id="dismissNotice" aria-label="Dismiss notice">×</button></div>
+      <div class="layout">
+        <div class="left-stack">
+          <section class="panel hero-panel">
+            <div class="panel-heading"><div class="chapter">01 <span>YOUR OPERATIVE</span></div><span class="section-meta">CHOOSE HERO</span></div>
+            <button id="heroButton" class="selected-hero" type="button" aria-haspopup="dialog">
+              <div id="heroInitial" class="hero-portrait">A</div>
+              <div class="hero-detail"><span class="field-caption">YOU ARE PLAYING</span><strong id="heroName">Abrams</strong><span id="heroSub">Select your hero</span><span class="hero-change">CHANGE HERO <b>↗</b></span></div>
+            </button>
+          </section>
+          <section class="panel enemy-panel">
+            <div class="panel-heading"><div class="chapter">02 <span>THE OPPOSITION</span></div><button id="clearEnemies" class="text-btn">CLEAR</button></div>
+            <div id="enemyChips" class="enemy-chips"></div>
+            <button id="addEnemy" type="button" class="add-enemy"><span class="plus">+</span> <span>ADD ENEMY</span> <span id="enemyCounter" class="enemy-count">0 / 6</span></button>
+            <p class="help-text">Tap portraits to remove. Add enemies to improve matchup picks when data exists.</p>
+          </section>
+          <section class="panel live-panel">
+            <div class="panel-heading"><div class="chapter">03 <span>FIND YOUR MATCH</span></div><span class="live-pill"><i></i> OPTIONAL</span></div>
+            <label for="playerId">STEAM ACCOUNT ID</label><div class="id-entry"><input id="playerId" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="SteamID3 / SteamID64" /><button id="findMatch" class="btn btn-solid" type="button">FIND</button></div>
+            <div id="matchStatus" class="match-status">Only publicly listed Watch-tab games are discoverable. Manual mode always works.</div>
+            <div id="matchDetails" hidden></div>
+          </section>
+        </div>
+
+        <section class="panel result-panel">
+          <div class="result-header"><div><div class="eyebrow accent">CURATED FIELD LOADOUT</div><h2>THE CURIOSITY <span>CATALOG</span></h2><p id="resultSubtitle">Builds for Abrams</p></div><button id="refresh" class="refresh-btn" type="button" title="Reload data"><span class="refresh-glyph">↻</span><span>UPDATE</span></button></div>
+          <div class="build-controls"><div class="phase-label">CHOOSE THE MOMENT</div><div class="phase-tabs" role="tablist" aria-label="Game phase"><button data-stage="early" class="active" role="tab" aria-selected="true"><b>EARLY</b><small>0—9 MIN</small></button><button data-stage="mid" role="tab" aria-selected="false"><b>MID</b><small>9—20 MIN</small></button><button data-stage="late" role="tab" aria-selected="false"><b>LATE</b><small>20+ MIN</small></button></div>
+          <div class="filter-row"><label for="budget">SOUL BUDGET</label><select id="budget"><option value="0">ANY COST</option><option value="800">UP TO 800</option><option value="1600">UP TO 1,600</option><option value="3200">UP TO 3,200</option><option value="6400">UP TO 6,400</option></select><span id="sourceBadge" class="source-badge">● SAMPLE DATA</span></div></div>
+          <div class="featured-title"><span class="line"></span><span>YOUR NEXT PURCHASE</span><span class="line"></span></div>
+          <div id="recommendations" class="recommendations" aria-live="polite"></div>
+          <div id="emptyResults" class="empty-state" hidden><div class="empty-icon">✧</div><strong>NOTHING IN THE CATALOG</strong><p id="emptyMessage">Choose a hero and reload the data.</p><button id="emptyRetry" class="btn btn-solid">TRY AGAIN</button></div>
+          <details id="weakPicks" class="weak-picks"><summary>LOWER-RANKED PURCHASES <span>↗ See comparisons</span></summary><div id="weakRows" class="weak-rows"></div></details>
+          <details class="method-note"><summary>HOW THESE PICKS ARE RANKED</summary><p id="methodText">Performance ranking details</p></details>
+        </section>
+      </div>
+      <footer><span>NIGHTSHIFT · INDEPENDENT COMMUNITY PROTOTYPE · NOT AFFILIATED WITH VALVE</span><span>NO OVERWOLF · NO GAME MEMORY ACCESS</span></footer>
+    </main>
+  </div>
+
+  <dialog id="heroDialog" class="picker-dialog"><div class="dialog-wrap"><div class="dialog-head"><div><span class="eyebrow">THE ROSTER</span><h3 id="dialogTitle">CHOOSE YOUR HERO</h3></div><button id="closeDialog" class="dialog-close" aria-label="Close">×</button></div><input id="heroSearch" type="search" placeholder="FIND A HERO…" aria-label="Search heroes" /><div id="heroGrid" class="hero-grid"></div></div></dialog>
+  <dialog id="settingsDialog" class="settings-dialog"><div class="dialog-wrap"><div class="dialog-head"><div><span class="eyebrow">YOUR FIELD KIT</span><h3>SETTINGS &amp; CACHE</h3></div><button id="closeSettings" class="dialog-close">×</button></div>
+    <div class="setting-card"><h4>DOWNLOADED ARTWORK</h4><p id="imageCacheStatus">Hero and item artwork is cached automatically on HTTPS / localhost after first download.</p><div class="settings-buttons"><button id="preloadImages" class="btn btn-solid" type="button">SAVE ALL KNOWN ART</button><button id="clearImages" class="btn btn-outline" type="button">CLEAR ART CACHE</button></div></div>
+    <div class="setting-card"><h4>OFFLINE STATISTICS</h4><p id="cacheStatus">No statistics cached yet.</p><div class="settings-buttons"><button id="clearCache" class="btn btn-outline">CLEAR STATS</button><button id="exportCache" class="btn btn-outline">EXPORT STATS</button></div></div>
+    <div class="setting-card"><h4>PLAYER ID</h4><p>The player ID is saved on this browser, and is sent to the public API only when you choose Find. It isn't a Steam login.</p><button id="forgetPlayer" class="btn btn-outline">FORGET MY ID</button></div>
+    <div class="setting-card"><h4>DATA &amp; ART SOURCES</h4><p>Match statistics: Deadlock API. Art: community extracted game assets; artwork belongs to Valve. Missing images fall back to a readable symbol.</p><a href="https://api.deadlock-api.com/docs/" target="_blank" rel="noopener">API DOCUMENTATION ↗</a> · <a href="https://github.com/0xThiagoAmaral/deadlock-open-assets" target="_blank" rel="noopener">ART SOURCE ↗</a></div>
+  </div></dialog>
+  <script src="app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "Nightshift — Deadlock Field Guide",
+  "short_name": "Nightshift",
+  "description": "A visual hero and item advisor with offline-cached game artwork",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#111512",
+  "theme_color": "#171b19",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}

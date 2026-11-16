@@ -1,0 +1,17 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const src=fs.readFileSync(__dirname+'/../app.js','utf8').replace(/\bbind\(\);\s*$/,'');
+const store={};const localStorage={getItem:k=>store[k]||null,setItem:(k,v)=>{store[k]=v},removeItem:k=>delete store[k]};
+const ctx={URL,console,localStorage,Date,Math,Number,JSON,String,Array,URLSearchParams,setTimeout,clearTimeout,document:{getElementById:()=>({value:''})}};
+vm.createContext(ctx);
+vm.runInContext(src+'\n;globalThis.test={assetURL,imgTag,parseHeroArt,parseItemArt,heroArt,itemArt,projectItem,STATE};',ctx);
+const a=ctx.test;
+assert.equal(a.assetURL('http://evil.org/example.png'),null);
+assert.equal(a.assetURL('https://attacker.example/hero.png'),null);
+assert(a.assetURL('images/deadlock/items/vitality/healing_rite.png').startsWith('https://media.githubusercontent.com/media/'));
+assert.equal(a.imgTag(null,'headshot'), '');
+assert(a.itemArt({id:5,name:'Headshot Booster',type:'weapon'}).endsWith('/items/weapon/headshot_booster.png'));
+a.parseHeroArt({heroes:{alias:{display_name:'Ivy',images:{path_card:'images/deadlock/heroes_card/grey_talon.png'}},ivy:{display_name:'Ivy',images:{path_card:'images/deadlock/heroes_card/ivy.png'}}}},true);
+assert(a.heroArt({id:20,name:'Ivy'}).endsWith('/heroes_card/ivy.png'));
+a.parseItemArt({items:[{name:'Healing Rite',image:'images/deadlock/items/vitality/healing_rite.png'}]});
+assert(a.itemArt({name:'Healing Rite',id:210}).endsWith('/items/vitality/healing_rite.png'));
+console.log('PASS visual metadata: safe trusted image URLs, hero-alias safety, item art fallback');
